@@ -1,0 +1,109 @@
+[gd_scene load_steps=9 format=3 uid="uid://c8i3422yldarm"]
+
+[ext_resource type="Script" uid="uid://bicyvhsgocq7m" path="res://entity.gd" id="1_fj7yv"]
+[ext_resource type="Script" uid="uid://cycpam4c4eru5" path="res://world.gd" id="1_tlwt5"]
+[ext_resource type="Texture2D" uid="uid://d3dqdbqoj5ewb" path="res://s34_NinjaRun_0.png" id="2_aqk2v"]
+[ext_resource type="Texture2D" uid="uid://chqvlsx2jfebj" path="res://icon.svg" id="2_tlwt5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tlwt5"]
+size = Vector2(404.5, 76)
+
+[sub_resource type="Curve" id="Curve_tlwt5"]
+_limits = [0.0, 100.0, 0.0, 1.0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.5, 100), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_tlwt5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_aqk2v"]
+
+[node name="world" type="Node2D"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+stretch_shrink = 3
+
+[node name="SubViewport" type="SubViewport" parent="CanvasLayer/SubViewportContainer"]
+snap_2d_transforms_to_pixel = true
+canvas_item_default_texture_filter = 0
+size = Vector2i(384, 216)
+render_target_update_mode = 4
+
+[node name="Node2D" type="Node2D" parent="CanvasLayer/SubViewportContainer/SubViewport"]
+script = ExtResource("1_tlwt5")
+
+[node name="Entity" type="CharacterBody2D" parent="CanvasLayer/SubViewportContainer/SubViewport/Node2D"]
+position = Vector2(196, 227)
+script = ExtResource("1_fj7yv")
+metadata/_custom_type_script = "uid://bicyvhsgocq7m"
+
+[node name="Icon" type="Sprite2D" parent="CanvasLayer/SubViewportContainer/SubViewport/Node2D/Entity"]
+scale = Vector2(3.21094, 0.570313)
+texture = ExtResource("2_tlwt5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/SubViewportContainer/SubViewport/Node2D/Entity"]
+shape = SubResource("RectangleShape2D_tlwt5")
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="CanvasLayer/SubViewportContainer/SubViewport/Node2D"]
+position = Vector2(104, 125)
+script = ExtResource("1_fj7yv")
+type = 1
+move_speed = 200.0
+arms_act_length = 0.5
+arms_curve = SubResource("Curve_tlwt5")
+jump_height = 3000.0
+jump_time_to_peak = 13.0
+jump_time_to_descent = 14.0
+
+[node name="Icon" type="Sprite2D" parent="CanvasLayer/SubViewportContainer/SubViewport/Node2D/CharacterBody2D"]
+scale = Vector2(0.1875, 0.1875)
+texture = ExtResource("2_tlwt5")
+
+[node name="arms" type="CharacterBody2D" parent="CanvasLayer/SubViewportContainer/SubViewport/Node2D/CharacterBody2D"]
+position = Vector2(7, 0)
+script = ExtResource("1_fj7yv")
+metadata/_custom_type_script = "uid://bicyvhsgocq7m"
+
+[node name="arms" type="Sprite2D" parent="CanvasLayer/SubViewportContainer/SubViewport/Node2D/CharacterBody2D/arms"]
+scale = Vector2(0.15625, 0.15625)
+texture = ExtResource("2_tlwt5")
+
+[node name="arms_home" type="CharacterBody2D" parent="CanvasLayer/SubViewportContainer/SubViewport/Node2D/CharacterBody2D"]
+position = Vector2(7, 0)
+script = ExtResource("1_fj7yv")
+metadata/_custom_type_script = "uid://bicyvhsgocq7m"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/SubViewportContainer/SubViewport/Node2D/CharacterBody2D"]
+position = Vector2(0, -2)
+shape = SubResource("CapsuleShape2D_tlwt5")
+
+[node name="Entity2" type="CharacterBody2D" parent="CanvasLayer/SubViewportContainer/SubViewport/Node2D"]
+script = ExtResource("1_fj7yv")
+metadata/_custom_type_script = "uid://bicyvhsgocq7m"
+
+[node name="S34NinjaRun0" type="Sprite2D" parent="CanvasLayer/SubViewportContainer/SubViewport/Node2D/Entity2"]
+position = Vector2(208.667, 155.667)
+texture = ExtResource("2_aqk2v")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/SubViewportContainer/SubViewport/Node2D/Entity2"]
+position = Vector2(210.667, 155.667)
+shape = SubResource("RectangleShape2D_aqk2v")
+
+[node name="Panel" type="Panel" parent="CanvasLayer"]
+offset_left = 59.0
+offset_top = 33.0
+offset_right = 238.0
+offset_bottom = 242.0
+
+[node name="Label" type="Label" parent="CanvasLayer/Panel"]
+layout_mode = 1
+offset_right = 98.0
+offset_bottom = 23.0
+text = "DEBUG WINDOW"
