@@ -22,6 +22,10 @@ window/size/window_height_override=648
 window/stretch/mode="canvas_items"
 window/stretch/scale_mode="integer"
 
+[global_group]
+
+Entity=""
+
 [input]
 
 input_a={
