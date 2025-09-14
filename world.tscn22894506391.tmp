@@ -1,0 +1,348 @@
+[gd_scene load_steps=18 format=3 uid="uid://c8i3422yldarm"]
+
+[ext_resource type="Script" uid="uid://bicyvhsgocq7m" path="res://entity.gd" id="1_fj7yv"]
+[ext_resource type="Script" uid="uid://cycpam4c4eru5" path="res://world.gd" id="1_tlwt5"]
+[ext_resource type="Texture2D" uid="uid://chqvlsx2jfebj" path="res://icon.svg" id="2_tlwt5"]
+[ext_resource type="Texture2D" uid="uid://clruk8tdf246" path="res://head.png" id="4_ioo17"]
+[ext_resource type="Script" uid="uid://cj18dxn01r02p" path="res://fantasy_ui.gd" id="5_036b0"]
+[ext_resource type="Texture2D" uid="uid://ds5xxw5q5b4e8" path="res://hand.png" id="5_wse8f"]
+[ext_resource type="Texture2D" uid="uid://cxe0vnxfeqq20" path="res://torso.png" id="6_ic0uy"]
+[ext_resource type="Texture2D" uid="uid://k2havrlx7exv" path="res://foot.png" id="7_k3n1d"]
+[ext_resource type="PackedScene" uid="uid://cc7875h773n63" path="res://enemy_halo.tscn" id="8_ic0uy"]
+[ext_resource type="Texture2D" uid="uid://cwm7v0l67u1wl" path="res://enemy.png" id="8_ioo17"]
+[ext_resource type="Texture2D" uid="uid://c3hf5osesum3p" path="res://block.png" id="9_wse8f"]
+[ext_resource type="Script" uid="uid://dewogb7ebgm6c" path="res://immediate_button.gd" id="12_k3n1d"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tlwt5"]
+size = Vector2(404.5, 76)
+
+[sub_resource type="Curve" id="Curve_tlwt5"]
+_limits = [0.0, 100.0, 0.0, 1.0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.5, 100), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ioo17"]
+size = Vector2(32, 10.3333)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_tlwt5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ic0uy"]
+size = Vector2(30.6667, 31.6667)
+
+[node name="world" type="Node2D"]
+script = ExtResource("1_tlwt5")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+stretch_shrink = 3
+metadata/_edit_lock_ = true
+
+[node name="SubViewport" type="SubViewport" parent="CanvasLayer/SubViewportContainer"]
+handle_input_locally = false
+snap_2d_transforms_to_pixel = true
+canvas_item_default_texture_filter = 0
+size = Vector2i(384, 216)
+render_target_update_mode = 4
+
+[node name="gameworld" type="Node2D" parent="CanvasLayer/SubViewportContainer/SubViewport"]
+unique_name_in_owner = true
+
+[node name="Entity" type="CharacterBody2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld"]
+position = Vector2(196, 227)
+script = ExtResource("1_fj7yv")
+metadata/_custom_type_script = "uid://bicyvhsgocq7m"
+
+[node name="Icon" type="Sprite2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/Entity"]
+scale = Vector2(3.21094, 0.570313)
+texture = ExtResource("2_tlwt5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/Entity"]
+shape = SubResource("RectangleShape2D_tlwt5")
+
+[node name="player" type="CharacterBody2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld"]
+unique_name_in_owner = true
+position = Vector2(104, 125)
+script = ExtResource("1_fj7yv")
+type = 1
+move_speed = 200.0
+arms_act_length = 0.5
+arms_curve = SubResource("Curve_tlwt5")
+jump_height = 3000.0
+jump_time_to_peak = 13.0
+jump_time_to_descent = 14.0
+
+[node name="Icon" type="Sprite2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/player"]
+position = Vector2(4.33333, -26.6667)
+texture = ExtResource("4_ioo17")
+
+[node name="arms" type="CharacterBody2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/player" node_paths=PackedStringArray("area_collider")]
+position = Vector2(3.33333, -11)
+script = ExtResource("1_fj7yv")
+type = 2
+area_collider = NodePath("Area2D")
+metadata/_custom_type_script = "uid://bicyvhsgocq7m"
+
+[node name="Hand" type="Sprite2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/player/arms"]
+position = Vector2(-11.1111, -0.370371)
+texture = ExtResource("5_wse8f")
+
+[node name="Hand2" type="Sprite2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/player/arms"]
+position = Vector2(10.5556, -2.03704)
+texture = ExtResource("5_wse8f")
+
+[node name="Area2D" type="Area2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/player/arms"]
+position = Vector2(0.666659, -0.999995)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/player/arms/Area2D"]
+shape = SubResource("RectangleShape2D_ioo17")
+
+[node name="arms_home" type="CharacterBody2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/player"]
+unique_name_in_owner = true
+position = Vector2(7, 0)
+script = ExtResource("1_fj7yv")
+metadata/_custom_type_script = "uid://bicyvhsgocq7m"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/player"]
+position = Vector2(4, -8)
+shape = SubResource("CapsuleShape2D_tlwt5")
+
+[node name="Torso" type="Sprite2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/player"]
+position = Vector2(2.66666, -9.33334)
+texture = ExtResource("6_ic0uy")
+
+[node name="Foot" type="Sprite2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/player"]
+position = Vector2(-8, 5.66667)
+texture = ExtResource("7_k3n1d")
+
+[node name="Foot2" type="Sprite2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/player"]
+position = Vector2(7.66667, 6)
+texture = ExtResource("7_k3n1d")
+
+[node name="Entity2" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld" instance=ExtResource("8_ic0uy")]
+position = Vector2(199, 132.667)
+
+[node name="Entity3" type="CharacterBody2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld"]
+position = Vector2(105.667, 171.333)
+script = ExtResource("1_fj7yv")
+metadata/_custom_type_script = "uid://bicyvhsgocq7m"
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/Entity3"]
+texture = ExtResource("9_wse8f")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/Entity3"]
+position = Vector2(-0.333344, -0.166668)
+shape = SubResource("RectangleShape2D_ic0uy")
+
+[node name="Entity4" type="CharacterBody2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld"]
+position = Vector2(75, 171)
+script = ExtResource("1_fj7yv")
+metadata/_custom_type_script = "uid://bicyvhsgocq7m"
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/Entity4"]
+texture = ExtResource("9_wse8f")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/Entity4"]
+position = Vector2(-0.333344, -0.166668)
+shape = SubResource("RectangleShape2D_ic0uy")
+
+[node name="Entity5" type="CharacterBody2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld"]
+position = Vector2(75, 139.667)
+script = ExtResource("1_fj7yv")
+metadata/_custom_type_script = "uid://bicyvhsgocq7m"
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/Entity5"]
+texture = ExtResource("9_wse8f")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/Entity5"]
+position = Vector2(-0.333344, -0.166668)
+shape = SubResource("RectangleShape2D_ic0uy")
+
+[node name="Entity6" type="CharacterBody2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld"]
+position = Vector2(44, 171.333)
+script = ExtResource("1_fj7yv")
+metadata/_custom_type_script = "uid://bicyvhsgocq7m"
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/Entity6"]
+texture = ExtResource("9_wse8f")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/Entity6"]
+position = Vector2(-0.333344, -0.166668)
+shape = SubResource("RectangleShape2D_ic0uy")
+
+[node name="Entity7" type="CharacterBody2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld"]
+position = Vector2(44, 140.333)
+script = ExtResource("1_fj7yv")
+metadata/_custom_type_script = "uid://bicyvhsgocq7m"
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/Entity7"]
+texture = ExtResource("9_wse8f")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/Entity7"]
+position = Vector2(-0.333344, -0.166668)
+shape = SubResource("RectangleShape2D_ic0uy")
+
+[node name="Entity8" type="CharacterBody2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld"]
+position = Vector2(44.3333, 108.667)
+script = ExtResource("1_fj7yv")
+metadata/_custom_type_script = "uid://bicyvhsgocq7m"
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/Entity8"]
+texture = ExtResource("9_wse8f")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/Entity8"]
+position = Vector2(-0.333344, -0.166668)
+shape = SubResource("RectangleShape2D_ic0uy")
+
+[node name="fantasy_ui" type="Panel" parent="CanvasLayer"]
+unique_name_in_owner = true
+clip_contents = true
+custom_minimum_size = Vector2(150, 150)
+offset_left = 59.0
+offset_top = 33.0
+offset_right = 359.0
+offset_bottom = 226.0
+script = ExtResource("5_036b0")
+
+[node name="ColorRect3" type="ColorRect" parent="CanvasLayer/fantasy_ui"]
+clip_contents = true
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 65.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.403922, 0.403922, 0.403922, 0.47451)
+
+[node name="HFlowContainer" type="HFlowContainer" parent="CanvasLayer/fantasy_ui/ColorRect3"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.055
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = -0.0400023
+offset_right = -7.0
+offset_bottom = -17.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/fantasy_ui/ColorRect3/HFlowContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/fantasy_ui/ColorRect3/HFlowContainer/ColorRect"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.581
+offset_right = 45.0
+offset_bottom = 45.581
+texture = ExtResource("8_ioo17")
+stretch_mode = 6
+flip_h = true
+
+[node name="ColorRect2" type="ColorRect" parent="CanvasLayer/fantasy_ui/ColorRect3/HFlowContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+
+[node name="ColorRect3" type="ColorRect" parent="CanvasLayer/fantasy_ui/ColorRect3/HFlowContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+
+[node name="ColorRect4" type="ColorRect" parent="CanvasLayer/fantasy_ui/ColorRect3/HFlowContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+
+[node name="ColorRect5" type="ColorRect" parent="CanvasLayer/fantasy_ui/ColorRect3/HFlowContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+
+[node name="ColorRect6" type="ColorRect" parent="CanvasLayer/fantasy_ui/ColorRect3/HFlowContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+
+[node name="ColorRect7" type="ColorRect" parent="CanvasLayer/fantasy_ui/ColorRect3/HFlowContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+
+[node name="ColorRect8" type="ColorRect" parent="CanvasLayer/fantasy_ui/ColorRect3/HFlowContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+
+[node name="ColorRect9" type="ColorRect" parent="CanvasLayer/fantasy_ui/ColorRect3/HFlowContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+
+[node name="ColorRect10" type="ColorRect" parent="CanvasLayer/fantasy_ui/ColorRect3/HFlowContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/fantasy_ui"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+mouse_filter = 1
+
+[node name="ColorRect2" type="ColorRect" parent="CanvasLayer/fantasy_ui"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -9.0
+offset_top = -9.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/fantasy_ui"]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 1
+offset_left = 6.0
+offset_top = 1.0
+offset_right = 137.0
+offset_bottom = 24.0
+text = "DEBUG WINDOW"
+
+[node name="Label2" type="Label" parent="CanvasLayer/fantasy_ui"]
+layout_mode = 1
+offset_left = 15.0
+offset_top = 36.0
+offset_right = 146.0
+offset_bottom = 59.0
+text = "Objects"
+
+[node name="Button" type="Button" parent="CanvasLayer"]
+unique_name_in_owner = true
+offset_left = 695.0
+offset_top = 147.0
+offset_right = 792.0
+offset_bottom = 178.0
+text = "spawn halo"
+script = ExtResource("12_k3n1d")
+
+[node name="Button1" type="Button" parent="CanvasLayer"]
+unique_name_in_owner = true
+offset_right = 8.0
+offset_bottom = 8.0
+script = ExtResource("12_k3n1d")
+metadata/_custom_type_script = "uid://dewogb7ebgm6c"
+
+[connection signal="gui_input" from="CanvasLayer/fantasy_ui" to="CanvasLayer/fantasy_ui" method="_on_gui_input"]
+[connection signal="mouse_entered" from="CanvasLayer/fantasy_ui" to="CanvasLayer/fantasy_ui" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/fantasy_ui" to="CanvasLayer/fantasy_ui" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="CanvasLayer/fantasy_ui/ColorRect" to="CanvasLayer/fantasy_ui" method="_on_color_rect_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/fantasy_ui/ColorRect" to="CanvasLayer/fantasy_ui" method="_on_color_rect_mouse_exited"]
+[connection signal="mouse_entered" from="CanvasLayer/fantasy_ui/ColorRect2" to="CanvasLayer/fantasy_ui" method="_on_color_rect_2_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/fantasy_ui/ColorRect2" to="CanvasLayer/fantasy_ui" method="_on_color_rect_2_mouse_exited"]

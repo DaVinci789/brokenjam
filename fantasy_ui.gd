@@ -8,10 +8,34 @@ var corner_hot := false
 var header_active := false
 var corner_active := false
 var start_size := Vector2.ZERO
+@onready var object_view_textures: Array[TextureRect] = [
+	$ColorRect3/HFlowContainer/ColorRect/TextureRect,
+	$ColorRect3/HFlowContainer/ColorRect2/TextureRect,
+	$ColorRect3/HFlowContainer/ColorRect3/TextureRect,
+	$ColorRect3/HFlowContainer/ColorRect4/TextureRect,
+	$ColorRect3/HFlowContainer/ColorRect5/TextureRect,
+	$ColorRect3/HFlowContainer/ColorRect6/TextureRect,
+	$ColorRect3/HFlowContainer/ColorRect7/TextureRect,
+	$ColorRect3/HFlowContainer/ColorRect8/TextureRect,
+	$ColorRect3/HFlowContainer/ColorRect9/TextureRect,
+	$ColorRect3/HFlowContainer/ColorRect10/TextureRect
+]
 
 func _process(delta) -> void:
 	if mouse_pressed:
 		mouse_pressed = false
+	object_view_textures = [
+		$ColorRect3/HFlowContainer/ColorRect/TextureRect,
+		$ColorRect3/HFlowContainer/ColorRect2/TextureRect,
+		$ColorRect3/HFlowContainer/ColorRect3/TextureRect,
+		$ColorRect3/HFlowContainer/ColorRect4/TextureRect,
+		$ColorRect3/HFlowContainer/ColorRect5/TextureRect,
+		$ColorRect3/HFlowContainer/ColorRect6/TextureRect,
+		$ColorRect3/HFlowContainer/ColorRect7/TextureRect,
+		$ColorRect3/HFlowContainer/ColorRect8/TextureRect,
+		$ColorRect3/HFlowContainer/ColorRect9/TextureRect,
+		$ColorRect3/HFlowContainer/ColorRect10/TextureRect
+	]
 	pass
 
 func _on_gui_input(event: InputEvent) -> void:

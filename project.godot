@@ -22,6 +22,10 @@ window/size/window_height_override=648
 window/stretch/mode="canvas_items"
 window/stretch/scale_mode="integer"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/private-exports/plugin.cfg")
+
 [global_group]
 
 Entity=""

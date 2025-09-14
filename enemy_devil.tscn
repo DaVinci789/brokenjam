@@ -1,0 +1,99 @@
+[gd_scene load_steps=9 format=3 uid="uid://cipwodliepk11"]
+
+[ext_resource type="Script" uid="uid://bicyvhsgocq7m" path="res://entity.gd" id="1_nugmr"]
+[ext_resource type="Texture2D" uid="uid://b8y87eybw3jee" path="res://devil.png" id="2_gfo4u"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gq3x2"]
+atlas = ExtResource("2_gfo4u")
+region = Rect2(0, 0, 26, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u8sly"]
+atlas = ExtResource("2_gfo4u")
+region = Rect2(26, 0, 26, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dvdgq"]
+atlas = ExtResource("2_gfo4u")
+region = Rect2(52, 0, 26, 21)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4fyj6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gq3x2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u8sly")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dvdgq")
+}],
+"loop": true,
+"name": &"squish",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d0t25"]
+size = Vector2(12, 5)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_d0t25"]
+
+[node name="Entity" type="CharacterBody2D" node_paths=PackedStringArray("area_collider", "animation_player")]
+script = ExtResource("1_nugmr")
+type = 4
+move_speed = 3.0
+area_collider = NodePath("Area2D")
+animation_player = NodePath("AnimationPlayer")
+enemy_type = 2
+movement_speed = 100.0
+head_bounce_velocity = -300.0
+despawn_timer = 4.0
+despawn_blink = 1.0
+enemy_oscillation_length = 1.0
+metadata/_custom_type_script = "uid://bicyvhsgocq7m"
+metadata/_access_modifiers = {
+&"animation_player": 2,
+&"area_collider": 2,
+&"arms_act_length": 2,
+&"arms_curve": 2,
+&"coyote_frames": 2,
+&"despawn_blink": 2,
+&"despawn_oscillation": 2,
+&"despawn_timer": 2,
+&"enemy_oscillation_length": 2,
+&"enemy_type": 2,
+&"floor_snap_length": 2,
+&"grabbable": 2,
+&"head_bounce_height": 2,
+&"head_bounce_velocity": 2,
+&"jump_height": 2,
+&"jump_time_to_descent": 2,
+&"jump_time_to_peak": 2,
+&"max_hp": 2,
+&"motion_mode": 0,
+&"move_speed": 2,
+&"movement_speed": 2,
+&"slide_on_ceiling": 0,
+&"type": 2,
+&"up_direction": 0,
+&"vertical_velocity_curve": 2
+}
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_4fyj6")
+flip_h = true
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(1, -8)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_d0t25")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="collision" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_d0t25")

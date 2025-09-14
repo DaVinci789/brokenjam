@@ -1,16 +1,91 @@
-[gd_scene load_steps=4 format=3 uid="uid://cc7875h773n63"]
+[gd_scene load_steps=8 format=3 uid="uid://cc7875h773n63"]
 
 [ext_resource type="Script" uid="uid://bicyvhsgocq7m" path="res://entity.gd" id="1_0f3u7"]
 [ext_resource type="Texture2D" uid="uid://cwm7v0l67u1wl" path="res://enemy.png" id="2_yg6p6"]
 
+[sub_resource type="Curve" id="Curve_yg6p6"]
+_limits = [-300.0, 300.0, 0.0, 1.0]
+_data = [Vector2(0, -300), 0.0, 0.0, 0, 0, Vector2(0.25, 0), 0.0, 0.0, 0, 0, Vector2(0.5, 300), 0.0, 0.0, 0, 0, Vector2(0.75, 0), 0.0, 0.0, 0, 0, Vector2(1, -300), 0.0, 0.0, 0, 0]
+point_count = 5
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_aqk2v"]
 size = Vector2(15, 14.6667)
 
-[node name="Entity2" type="CharacterBody2D" node_paths=PackedStringArray("area_collider")]
+[sub_resource type="Animation" id="Animation_0f3u7"]
+resource_name = "blink"
+length = 0.3
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("tex:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.133333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_yg6p6"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("tex:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_m2o81"]
+_data = {
+&"RESET": SubResource("Animation_yg6p6"),
+&"blink": SubResource("Animation_0f3u7")
+}
+
+[node name="Entity2" type="CharacterBody2D" node_paths=PackedStringArray("area_collider", "animation_player")]
 script = ExtResource("1_0f3u7")
-type = 3
+type = 4
+grabbable = true
 area_collider = NodePath("Area2D")
+animation_player = NodePath("AnimationPlayer")
+enemy_type = 1
+despawn_timer = 4.0
+despawn_blink = 1.0
+vertical_velocity_curve = SubResource("Curve_yg6p6")
+enemy_oscillation_length = 1.0
 metadata/_custom_type_script = "uid://bicyvhsgocq7m"
+metadata/_access_modifiers = {
+&"animation_player": 2,
+&"area_collider": 2,
+&"arms_act_length": 2,
+&"arms_curve": 2,
+&"coyote_frames": 2,
+&"despawn_blink": 2,
+&"despawn_curve": 2,
+&"despawn_oscillation": 2,
+&"despawn_timer": 2,
+&"enemy_oscillation_length": 2,
+&"enemy_type": 2,
+&"grabbable": 2,
+&"head_bounce_height": 2,
+&"jump_height": 2,
+&"jump_time_to_descent": 2,
+&"jump_time_to_peak": 2,
+&"max_hp": 2,
+&"motion_mode": 2,
+&"move_speed": 2,
+&"slide_on_ceiling": 2,
+&"type": 2,
+&"up_direction": 2,
+&"vertical_velocity_curve": 2
+}
 
 [node name="tex" type="Sprite2D" parent="."]
 texture = ExtResource("2_yg6p6")
@@ -21,3 +96,8 @@ flip_h = true
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(-0.333328, 0.666656)
 shape = SubResource("RectangleShape2D_aqk2v")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_m2o81")
+}
