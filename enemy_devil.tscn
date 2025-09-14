@@ -43,17 +43,21 @@ size = Vector2(12, 5)
 [sub_resource type="CircleShape2D" id="CircleShape2D_d0t25"]
 
 [node name="Entity" type="CharacterBody2D" node_paths=PackedStringArray("area_collider", "animation_player")]
+collision_layer = 2
 script = ExtResource("1_nugmr")
 type = 4
 move_speed = 3.0
+facing = 1
 area_collider = NodePath("Area2D")
 animation_player = NodePath("AnimationPlayer")
 enemy_type = 2
+weight = 200.0
 movement_speed = 100.0
 head_bounce_velocity = -300.0
 despawn_timer = 4.0
 despawn_blink = 1.0
 enemy_oscillation_length = 1.0
+enemy_toggles = 1
 metadata/_custom_type_script = "uid://bicyvhsgocq7m"
 metadata/_access_modifiers = {
 &"animation_player": 2,
@@ -65,7 +69,9 @@ metadata/_access_modifiers = {
 &"despawn_oscillation": 2,
 &"despawn_timer": 2,
 &"enemy_oscillation_length": 2,
+&"enemy_toggles": 2,
 &"enemy_type": 2,
+&"facing": 2,
 &"floor_snap_length": 2,
 &"grabbable": 2,
 &"head_bounce_height": 2,
@@ -80,7 +86,8 @@ metadata/_access_modifiers = {
 &"slide_on_ceiling": 0,
 &"type": 2,
 &"up_direction": 0,
-&"vertical_velocity_curve": 2
+&"vertical_velocity_curve": 2,
+&"weight": 2
 }
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="."]

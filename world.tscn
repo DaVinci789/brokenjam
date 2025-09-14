@@ -1,10 +1,11 @@
-[gd_scene load_steps=20 format=3 uid="uid://c8i3422yldarm"]
+[gd_scene load_steps=25 format=4 uid="uid://c8i3422yldarm"]
 
 [ext_resource type="Script" uid="uid://cycpam4c4eru5" path="res://world.gd" id="1_tlwt5"]
 [ext_resource type="Texture2D" uid="uid://bbj0md4xap7db" path="res://sky.png" id="2_70uel"]
 [ext_resource type="Script" uid="uid://bicyvhsgocq7m" path="res://entity.gd" id="2_k3n1d"]
 [ext_resource type="Texture2D" uid="uid://chqvlsx2jfebj" path="res://icon.svg" id="2_tlwt5"]
 [ext_resource type="Curve" uid="uid://biub7w8c1x0m5" path="res://arms_curve.tres" id="3_2o6r5"]
+[ext_resource type="Texture2D" uid="uid://iq7qvil14r5j" path="res://floor_sprite.png" id="3_hiqwa"]
 [ext_resource type="Texture2D" uid="uid://clruk8tdf246" path="res://head.png" id="4_ioo17"]
 [ext_resource type="Script" uid="uid://cj18dxn01r02p" path="res://fantasy_ui.gd" id="5_036b0"]
 [ext_resource type="Texture2D" uid="uid://ds5xxw5q5b4e8" path="res://hand.png" id="5_wse8f"]
@@ -29,6 +30,29 @@ size = Vector2(30.6667, 31.6667)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k3n1d"]
 size = Vector2(395.333, 28.8333)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2u3nc"]
+texture = ExtResource("3_hiqwa")
+texture_region_size = Vector2i(7, 7)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_udxuc"]
+texture = ExtResource("3_hiqwa")
+margins = Vector2i(17, 0)
+texture_region_size = Vector2i(7, 7)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ikiii"]
+texture = ExtResource("3_hiqwa")
+margins = Vector2i(2, 0)
+texture_region_size = Vector2i(7, 7)
+5:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_cbp6q"]
+tile_size = Vector2i(7, 7)
+sources/0 = SubResource("TileSetAtlasSource_2u3nc")
+sources/2 = SubResource("TileSetAtlasSource_udxuc")
+sources/3 = SubResource("TileSetAtlasSource_ikiii")
 
 [node name="world" type="Node2D"]
 script = ExtResource("1_tlwt5")
@@ -65,6 +89,7 @@ position = Vector2(104, 125)
 script = ExtResource("2_k3n1d")
 type = 1
 move_speed = 200.0
+facing = 2
 arms_act_length = 0.5
 arms_curve = ExtResource("3_2o6r5")
 coyote_frames = 20.0
@@ -231,6 +256,11 @@ texture = ExtResource("2_tlwt5")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/Entity9"]
 shape = SubResource("RectangleShape2D_k3n1d")
+
+[node name="Layer0" type="TileMapLayer" parent="CanvasLayer"]
+use_parent_material = true
+tile_map_data = PackedByteArray("AAABAAIAAgAAAAAAAAACAAIAAgAAAAAAAAADAAIAAgAAAAAAAAAEAAIAAgAAAAAAAAAFAAIAAgAAAAAAAAAAAAIAAAAAAAAAAAAGAAIAAwAFAAAAAAA=")
+tile_set = SubResource("TileSet_cbp6q")
 
 [node name="fantasy_ui" type="Panel" parent="CanvasLayer"]
 unique_name_in_owner = true

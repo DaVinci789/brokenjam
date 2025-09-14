@@ -33,6 +33,12 @@ enum HoldState {
 	Holding,
 }
 
+enum Facing {
+	None,
+	Left,
+	Right,
+}
+
 func _ready() -> void:
 	assert(despawn_blink <= despawn_timer)
 	add_to_group("Entity")
@@ -50,9 +56,11 @@ func _ready() -> void:
 
 @export var type := EntityType.None
 @export var move_speed := 0.0
+@export var facing: Facing = Facing.None
 @export var grabbable := false
 @export var area_collider: Area2D
 @export var animation_player: AnimationPlayer
+
 var state: int = ActState.None
 var hold_state: HoldState = HoldState.Empty
 var arm_action: ArmActionType = ArmActionType.None
@@ -68,6 +76,8 @@ var slot_index := -1
 var previously_grabbed := false
 var frames_in_air := 0
 var can_jump := true
+var last_collision: KinematicCollision2D = null
+
 
 @onready var jump_velocity := ((2.0 * jump_height) / jump_time_to_peak) * -1.0
 @onready var jump_gravity := ((-2.0 * jump_height) / (jump_time_to_peak * jump_time_to_peak)) * -1.0
@@ -104,10 +114,15 @@ var arms_active_timer: float = 0
 @export_subgroup("Enemy")
 @export var enemy_type: EnemyType = EnemyType.None
 @export var max_hp := 3
+@export var weight := 0.0
 @export var movement_speed := 0.0
 @export var head_bounce_velocity := 0.0
 @export var despawn_timer := 0.0
 @export var despawn_blink := 0.0
 @export var vertical_velocity_curve: Curve
 @export var enemy_oscillation_length := 0.0
+enum EnemyToggles {
+	UseGravity = 1 << 0,
+}
+@export_flags("Effected by Gravity:1") var enemy_toggles := 0
 var enemy_timer := 0.0

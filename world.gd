@@ -132,8 +132,22 @@ func _ready() -> void:
 		if entity.type == Entity.EntityType.Enemy:
 			entity.velocity.x = -100
 
+func get_enemies(entities: Array[Entity]) -> Array[Entity]:
+	var result: Array[Entity] = []
+	for entity in entities:
+		if entity.type == Entity.EntityType.Enemy:
+			result.append(entity)
+	return result
+
+func flip_facing(entity: Entity) -> void:
+	if entity.facing == Entity.Facing.Left:
+		entity.facing = Entity.Facing.Right
+	else:
+		entity.facing = Entity.Facing.Left
+
 func _process(delta: float) -> void:
 	var entities := get_entities()
+	var enemies  := get_enemies(entities)
 	var collision_pairs := get_area_collisions(entities)
 	
 	# Handle gravity & frames_in_air first
@@ -143,7 +157,13 @@ func _process(delta: float) -> void:
 	else:
 		node_player.frames_in_air += 1
 		node_player.velocity.y += get_gravity(node_player)
-
+	
+	for enemy: Entity in enemies:
+		if not enemy.is_on_floor():
+			enemy.frames_in_air += 1
+		else:
+			enemy.frames_in_air = 0
+	
 	# Update coyote check AFTER frames_in_air is correct
 	node_player.can_jump = node_player.is_on_floor() or node_player.frames_in_air <= node_player.coyote_frames
 	
@@ -178,27 +198,29 @@ func _process(delta: float) -> void:
 			if pair.b.enemy_type == Entity.EnemyType.Devil:
 				node_player.velocity.y = pair.b.head_bounce_velocity
 	
-	for enemy: Entity in entities:
-		if enemy.type == Entity.EntityType.Enemy:
-			if enemy.slot_index == node_player.hold_index:
-				enemy.held = true 
-				disable_collision(enemy)
-				enemy.velocity = Vector2.ZERO
+	for enemy: Entity in enemies:
+		if enemy.slot_index == node_player.hold_index:
+			enemy.held = true 
+			disable_collision(enemy)
+			enemy.velocity = Vector2.ZERO
 	
-	for enemy: Entity in entities:
-		if enemy.type == Entity.EntityType.Enemy:
-			if enemy.held:
-				enemy.global_position = arms.global_position
-				enemy.despawn_timer -= delta
-				if enemy.despawn_timer <= enemy.despawn_blink:
-					blink(enemy, true)
-			else:
-				enemy.enemy_timer += delta
-				enemy.enemy_timer = clampf(enemy.enemy_timer, 0.0, enemy.enemy_oscillation_length)
-				if enemy.enemy_type == Entity.EnemyType.Halo:
-					enemy.velocity.y = enemy.vertical_velocity_curve.sample(enemy.enemy_timer / enemy.enemy_oscillation_length)
-				elif enemy.enemy_type == Entity.EnemyType.Devil:
-					enemy.velocity.x = enemy.movement_speed
+	for enemy: Entity in enemies:
+		if enemy.held:
+			enemy.global_position = arms.global_position
+			enemy.despawn_timer -= delta
+			if enemy.despawn_timer <= enemy.despawn_blink:
+				blink(enemy, true)
+		else:
+			enemy.enemy_timer += delta
+			enemy.enemy_timer = clampf(enemy.enemy_timer, 0.0, enemy.enemy_oscillation_length)
+			if enemy.enemy_type == Entity.EnemyType.Halo:
+				enemy.velocity.y = enemy.vertical_velocity_curve.sample(enemy.enemy_timer / enemy.enemy_oscillation_length)
+			elif enemy.enemy_type == Entity.EnemyType.Devil:
+				if enemy.frames_in_air == 0:
+					if is_equal_approx(abs(enemy.last_collision.get_normal().x), 1.0):
+						flip_facing(enemy)
+				else:
+					enemy.velocity.x = 0
 	
 	if node_player.arm_action == Entity.ArmActionType.Throw:
 		if node_player.arms_curve.sample(node_player.arms_active_timer / node_player.arms_act_length) >= node_player.arms_curve.max_value:
@@ -220,7 +242,6 @@ func _process(delta: float) -> void:
 	if %Button.just_pressed:
 		var new_enemy: Entity = enemy_halo_scene.instantiate()
 		new_enemy.global_position = Vector2(199, 132)
-		new_enemy.velocity.x = -100
 		if register_object(new_enemy) > -1:
 			%gameworld.add_child(new_enemy)
 		else:
@@ -228,9 +249,7 @@ func _process(delta: float) -> void:
 	
 	if %Button1.just_pressed:
 		var new_enemy: Entity = enemy_devil_scene.instantiate()
-		#new_enemy.global_position = Vector2(400, 980)
 		new_enemy.global_position = Vector2(300, 132)
-		new_enemy.velocity.y = 100
 		if register_object(new_enemy) > -1:
 			%gameworld.add_child(new_enemy)
 		else:
@@ -243,18 +262,24 @@ func _process(delta: float) -> void:
 	if node_player.arms_active_timer / node_player.arms_act_length >= 1.0:
 		node_player.arms_active_timer = 0
 		node_player.arm_action = Entity.ArmActionType.None
-	for enemy: Entity in entities:
-		if enemy.type == Entity.EntityType.Enemy:
-			if enemy.enemy_timer / enemy.enemy_oscillation_length >= 1.0:
-				enemy.enemy_timer = 0
-			if not enemy.on_screen or enemy.despawn_timer <= 0.0:
-				active_objects[enemy.slot_index] = null
-				enemy.queue_free()
+	for enemy: Entity in enemies:
+		if enemy.enemy_timer / enemy.enemy_oscillation_length >= 1.0:
+			enemy.enemy_timer = 0
+		if not enemy.on_screen or enemy.despawn_timer <= 0.0:
+			active_objects[enemy.slot_index] = null
+			enemy.queue_free() # not this.
+		if enemy.facing == Entity.Facing.Left:
+			enemy.velocity.x = -enemy.movement_speed
+		else:
+			enemy.velocity.x = enemy.movement_speed
+		if enemy.enemy_toggles & Entity.EnemyToggles.UseGravity:
+			enemy.velocity.y = enemy.weight
 	
 	draw_fantasy_ui(active_objects, node_player.hold_index)
 
 func _physics_process(delta: float) -> void:
 	var entities := get_entities()
+	var enemies := get_enemies(entities)
 	node_player.move_and_slide()
 	
 	if node_player.arm_action != Entity.ArmActionType.None:
@@ -268,8 +293,8 @@ func _physics_process(delta: float) -> void:
 		arms.velocity = arm_velocity
 		arms.move_and_slide()
 	
-	for entity: Entity in entities:
-		if entity.type == Entity.EntityType.Enemy:
-			if not entity.held:
-				entity.move_and_slide()
+	for entity: Entity in enemies:
+		if not entity.held:
+			entity.move_and_slide()
+			entity.last_collision = entity.get_last_slide_collision()
 	pass

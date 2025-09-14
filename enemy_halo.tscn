@@ -11,6 +11,21 @@ point_count = 5
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_aqk2v"]
 size = Vector2(15, 14.6667)
 
+[sub_resource type="Animation" id="Animation_yg6p6"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("tex:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
 [sub_resource type="Animation" id="Animation_0f3u7"]
 resource_name = "blink"
 length = 0.3
@@ -28,21 +43,6 @@ tracks/0/keys = {
 "values": [true, false]
 }
 
-[sub_resource type="Animation" id="Animation_yg6p6"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("tex:visible")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_m2o81"]
 _data = {
 &"RESET": SubResource("Animation_yg6p6"),
@@ -52,10 +52,12 @@ _data = {
 [node name="Entity2" type="CharacterBody2D" node_paths=PackedStringArray("area_collider", "animation_player")]
 script = ExtResource("1_0f3u7")
 type = 4
+facing = 1
 grabbable = true
 area_collider = NodePath("Area2D")
 animation_player = NodePath("AnimationPlayer")
 enemy_type = 1
+movement_speed = 100.0
 despawn_timer = 4.0
 despawn_blink = 1.0
 vertical_velocity_curve = SubResource("Curve_yg6p6")
