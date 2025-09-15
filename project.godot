@@ -29,6 +29,7 @@ enabled=PackedStringArray("res://addons/private-exports/plugin.cfg")
 [global_group]
 
 Entity=""
+DevNote=""
 
 [input]
 

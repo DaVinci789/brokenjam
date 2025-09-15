@@ -16,7 +16,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("tex:visible")
+tracks/0/path = NodePath("Sprite2D:visible")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -33,7 +33,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("tex:visible")
+tracks/0/path = NodePath("Sprite2D:visible")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -62,6 +62,7 @@ despawn_timer = 4.0
 despawn_blink = 1.0
 vertical_velocity_curve = SubResource("Curve_yg6p6")
 enemy_oscillation_length = 1.0
+enemy_toggles = 2
 metadata/_custom_type_script = "uid://bicyvhsgocq7m"
 metadata/_access_modifiers = {
 &"animation_player": 2,
@@ -83,13 +84,14 @@ metadata/_access_modifiers = {
 &"max_hp": 2,
 &"motion_mode": 2,
 &"move_speed": 2,
+&"movement_speed": 2,
 &"slide_on_ceiling": 2,
 &"type": 2,
 &"up_direction": 2,
 &"vertical_velocity_curve": 2
 }
 
-[node name="tex" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_yg6p6")
 flip_h = true
 

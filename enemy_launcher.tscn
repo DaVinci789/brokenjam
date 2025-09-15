@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=3 uid="uid://bk46mfqpcypu6"]
+
+[ext_resource type="Script" uid="uid://bicyvhsgocq7m" path="res://entity.gd" id="1_vcerv"]
+[ext_resource type="Texture2D" uid="uid://uougupsgaerp" path="res://launcher_ground.png" id="2_uy6ji"]
+[ext_resource type="Texture2D" uid="uid://cidgni1o74isn" path="res://launcher_sky.png" id="3_bm0ek"]
+
+[sub_resource type="Curve" id="Curve_vcerv"]
+_limits = [-25.0, 25.0, 0.0, 1.0]
+_data = [Vector2(0, -25), 0.0, 0.0, 0, 0, Vector2(0.25, 0.5), 0.0, 0.0, 0, 0, Vector2(0.5, 25), 0.0, 0.0, 0, 0, Vector2(0.75, 0.5), 0.0, 0.0, 0, 0, Vector2(1, -25), 0.0, 0.0, 0, 0]
+point_count = 5
+
+[node name="launcher" type="CharacterBody2D"]
+script = ExtResource("1_vcerv")
+type = 4
+facing = 1
+spawn_timer_length = 1.0
+vertical_velocity_curve = SubResource("Curve_vcerv")
+enemy_oscillation_length = 8.0
+enemy_toggles = 8
+metadata/_custom_type_script = "uid://bicyvhsgocq7m"
+metadata/_access_modifiers = {
+&"arms_act_length": 2,
+&"arms_curve": 2,
+&"coyote_frames": 2,
+&"enemy_toggles": 2,
+&"fallthrough_length_frames": 2,
+&"jump_height": 2,
+&"jump_time_to_descent": 2,
+&"jump_time_to_peak": 2,
+&"max_hp": 2,
+&"move_speed": 0,
+&"type": 2
+}
+
+[node name="ground" type="Sprite2D" parent="."]
+texture = ExtResource("2_uy6ji")
+
+[node name="sky" type="Sprite2D" parent="."]
+texture = ExtResource("3_bm0ek")

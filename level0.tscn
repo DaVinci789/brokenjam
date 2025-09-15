@@ -1,0 +1,208 @@
+[gd_scene load_steps=12 format=4 uid="uid://cq5o3rfvc5bu7"]
+
+[ext_resource type="Texture2D" uid="uid://qvpjq3ppwsec" path="res://test_floor.png" id="1_mh2b6"]
+[ext_resource type="Texture2D" uid="uid://d148ckw2bwhme" path="res://night_sky.png" id="1_tgtrw"]
+[ext_resource type="PackedScene" uid="uid://bk46mfqpcypu6" path="res://enemy_launcher.tscn" id="2_rr31j"]
+[ext_resource type="PackedScene" uid="uid://cs6q1rfsuaqf5" path="res://block.tscn" id="3_vhh4d"]
+[ext_resource type="FontFile" uid="uid://bsk2n8bfwuh3p" path="res://kirby-super-star-dialogue.otf" id="5_f02tp"]
+[ext_resource type="PackedScene" uid="uid://bghxa1m6uvkcl" path="res://devnote.tscn" id="6_04g2k"]
+[ext_resource type="Texture2D" uid="uid://b15w6ud37k501" path="res://door.png" id="7_vxl8l"]
+[ext_resource type="Script" uid="uid://bicyvhsgocq7m" path="res://entity.gd" id="8_xwjtr"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rr31j"]
+texture = ExtResource("1_mh2b6")
+separation = Vector2i(1, 0)
+texture_region_size = Vector2i(8, 7)
+use_texture_padding = false
+0:0/0 = 0
+0:0/0/modulate = Color(0.378766, 0.660036, 0.133644, 1)
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(0, -3.5, 4, -3.5, 4, 3.5, 0, 3.5)
+0:0/0/physics_layer_0/polygon_0/one_way = true
+1:0/0 = 0
+1:0/0/modulate = Color(0.378766, 0.660036, 0.133644, 1)
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -3.5, 4, -3.5, 4, 3.5, -4, 3.5)
+1:0/0/physics_layer_0/polygon_0/one_way = true
+2:0/0 = 0
+2:0/0/modulate = Color(0.378766, 0.660036, 0.133644, 1)
+2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -3.5, 0, -3.5, 0, 3.5, -4, 3.5)
+2:0/0/physics_layer_0/polygon_0/one_way = true
+
+[sub_resource type="TileSet" id="TileSet_cbp6q"]
+tile_size = Vector2i(8, 7)
+physics_layer_0/collision_layer = 1
+physics_layer_1/collision_layer = 4
+sources/1 = SubResource("TileSetAtlasSource_rr31j")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0i0an"]
+size = Vector2(40, 46)
+
+[node name="Node2D" type="Node2D"]
+metadata/_edit_horizontal_guides_ = [216.0, 432.0, 648.0]
+metadata/_edit_vertical_guides_ = [384.0, 768.0, 1152.0, 1536.0, 1920.0]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -3
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer"]
+position = Vector2(192, 108)
+texture = ExtResource("1_tgtrw")
+
+[node name="Layer0" type="TileMapLayer" parent="."]
+use_parent_material = true
+scale = Vector2(0.985, 0.985)
+tile_map_data = PackedByteArray("AAD//z8AAQABAAAAAAAAAD8AAQABAAAAAAABAD8AAQABAAAAAAACAD8AAQABAAAAAAADAD8AAQABAAAAAAAEAD8AAQABAAAAAAAFAD8AAQABAAAAAAAGAD8AAQABAAAAAAAHAD8AAQABAAAAAAAIAD8AAQABAAAAAAAJAD8AAQABAAAAAAAKAD8AAQABAAAAAAALAD8AAQABAAAAAAAMAD8AAQABAAAAAAANAD8AAQABAAAAAAAOAD8AAQABAAAAAAAPAD8AAQABAAAAAAAQAD8AAQABAAAAAAARAD8AAQABAAAAAAASAD8AAQABAAAAAAATAD8AAQABAAAAAAAUAD8AAQABAAAAAAAVAD8AAQABAAAAAAAWAD8AAQABAAAAAAAXAD8AAQABAAAAAAAYAD8AAQABAAAAAAAZAD8AAQABAAAAAAAaAD8AAQABAAAAAAAbAD8AAQABAAAAAAAcAD8AAQABAAAAAAAdAD8AAQABAAAAAAAeAD8AAQABAAAAAAAfAD8AAQABAAAAAAAgAD8AAQABAAAAAAAhAD8AAQABAAAAAAAiAD8AAQABAAAAAAAjAD8AAQABAAAAAAAkAD8AAQABAAAAAAAlAD8AAQABAAAAAAAmAD8AAQABAAAAAAAnAD8AAQABAAAAAAAoAD8AAQABAAAAAAApAD8AAQABAAAAAAAqAD8AAQABAAAAAAArAD8AAQABAAAAAAAsAD8AAQABAAAAAAAtAD8AAQABAAAAAAAuAD8AAQABAAAAAAAvAD8AAQABAAAAAAAwAD8AAQABAAAAAAAxAD8AAQABAAAAAAAyAD8AAQABAAAAAAAzAD8AAQABAAAAAAA0AD8AAQABAAAAAAA1AD8AAQABAAAAAAA2AD8AAQABAAAAAAA3AD8AAQABAAAAAAA4AD8AAQABAAAAAAA5AD8AAQABAAAAAAA6AD8AAQABAAAAAAA7AD8AAQABAAAAAAA8AD8AAQABAAAAAAA9AD8AAQABAAAAAAA+AD8AAQABAAAAAAA/AD8AAQABAAAAAABAAD8AAQABAAAAAABBAD8AAQABAAAAAABCAD8AAQABAAAAAABDAD8AAQABAAAAAABEAD8AAQABAAAAAABFAD8AAQABAAAAAABGAD8AAQABAAAAAABHAD8AAQABAAAAAABIAD8AAQABAAAAAABJAD8AAQABAAAAAABKAD8AAQABAAAAAABLAD8AAQABAAAAAABMAD8AAQABAAAAAABNAD8AAQABAAAAAABOAD8AAQABAAAAAABPAD8AAQABAAAAAABQAD8AAQABAAAAAABRAD8AAQABAAAAAABSAD8AAQABAAAAAABTAD8AAQABAAAAAABUAD8AAQABAAAAAABVAD8AAQABAAAAAABWAD8AAQABAAAAAABXAD8AAQABAAAAAABYAD8AAQABAAAAAABZAD8AAQABAAAAAABaAD8AAQABAAAAAABbAD8AAQABAAAAAABcAD8AAQABAAAAAABdAD8AAQABAAAAAABeAD8AAQABAAAAAABfAD8AAQABAAAAAABgAD8AAQABAAAAAABhAD8AAQABAAAAAABiAD8AAQABAAAAAABjAD8AAQABAAAAAABkAD8AAQABAAAAAABlAD8AAQABAAAAAABmAD8AAQABAAAAAABnAD8AAQABAAAAAABoAD8AAQABAAAAAABpAD8AAQABAAAAAABqAD8AAQABAAAAAABrAD8AAQABAAAAAABsAD8AAQABAAAAAABtAD8AAQABAAAAAABuAD8AAQABAAAAAABvAD8AAQABAAAAAABwAD8AAQABAAAAAABxAD8AAQABAAAAAAByAD8AAQABAAAAAABzAD8AAQABAAAAAAB0AD8AAQABAAAAAAB1AD8AAQABAAAAAAB2AD8AAQABAAAAAAB3AD8AAQABAAAAAAB4AD8AAQABAAAAAAB5AD8AAQABAAAAAAB6AD8AAQABAAAAAAB7AD8AAQABAAAAAAB8AD8AAQABAAAAAAB9AD8AAQABAAAAAAB+AD8AAQABAAAAAAB/AD8AAQABAAAAAACAAD8AAQABAAAAAACBAD8AAQABAAAAAACCAD8AAQABAAAAAACDAD8AAQABAAAAAACEAD8AAQABAAAAAACFAD8AAQABAAAAAACGAD8AAQABAAAAAACHAD8AAQABAAAAAACIAD8AAQABAAAAAACJAD8AAQABAAAAAACKAD8AAQABAAAAAACLAD8AAQABAAAAAACMAD8AAQABAAAAAACNAD8AAQABAAAAAACOAD8AAQABAAAAAACPAD8AAQABAAAAAACQAD8AAQABAAAAAACRAD8AAQABAAAAAACSAD8AAQABAAAAAACTAD8AAQABAAAAAACUAD8AAQABAAAAAACVAD8AAQABAAAAAACWAD8AAQABAAAAAACXAD8AAQABAAAAAACYAD8AAQABAAAAAACZAD8AAQABAAAAAACaAD8AAQABAAAAAACbAD8AAQABAAAAAACcAD8AAQABAAAAAACdAD8AAQABAAAAAACeAD8AAQABAAAAAACfAD8AAQABAAAAAACgAD8AAQABAAAAAAChAD8AAQABAAAAAACiAD8AAQABAAAAAACjAD8AAQABAAAAAACkAD8AAQABAAAAAAClAD8AAQABAAAAAACmAD8AAQABAAAAAACnAD8AAQABAAAAAACoAD8AAQABAAAAAACpAD8AAQABAAAAAACqAD8AAQABAAAAAACrAD8AAQABAAAAAACsAD8AAQABAAAAAACtAD8AAQABAAAAAACuAD8AAQABAAAAAACvAD8AAQABAAAAAACwAD8AAQABAAAAAACxAD8AAQABAAAAAACyAD8AAQABAAAAAACzAD8AAQABAAAAAAC0AD8AAQABAAAAAAC1AD8AAQABAAAAAAC2AD8AAQABAAAAAAC3AD8AAQABAAAAAAC4AD8AAQABAAAAAAC5AD8AAQABAAAAAAC6AD8AAQABAAAAAAC7AD8AAQABAAAAAAC8AD8AAQABAAAAAAC9AD8AAQABAAAAAAC+AD8AAQABAAAAAAC/AD8AAQABAAAAAADAAD8AAQABAAAAAADBAD8AAQABAAAAAADCAD8AAQABAAAAAADDAD8AAQABAAAAAADEAD8AAQABAAAAAADFAD8AAQABAAAAAADGAD8AAQABAAAAAADHAD8AAQABAAAAAADIAD8AAQABAAAAAADJAD8AAQABAAAAAADKAD8AAQABAAAAAADLAD8AAQABAAAAAADMAD8AAQABAAAAAADNAD8AAQABAAAAAADOAD8AAQABAAAAAADPAD8AAQABAAAAAADQAD8AAQABAAAAAADRAD8AAQABAAAAAADSAD8AAQABAAAAAADTAD8AAQABAAAAAADUAD8AAQABAAAAAADVAD8AAQABAAAAAADWAD8AAQABAAAAAADXAD8AAQABAAAAAADYAD8AAQABAAAAAADZAD8AAQABAAAAAADaAD8AAQABAAAAAADbAD8AAQABAAAAAADcAD8AAQABAAAAAADdAD8AAQABAAAAAADeAD8AAQABAAAAAADfAD8AAQABAAAAAADgAD8AAQABAAAAAADhAD8AAQABAAAAAADiAD8AAQABAAAAAADjAD8AAQABAAAAAADkAD8AAQABAAAAAADlAD8AAQABAAAAAADmAD8AAQABAAAAAADnAD8AAQABAAAAAADoAD8AAQABAAAAAADpAD8AAQABAAAAAADqAD8AAQABAAAAAADrAD8AAQABAAAAAADsAD8AAQABAAAAAADtAD8AAQABAAAAAADuAD8AAQABAAAAAADvAD8AAQABAAAAAADwAD8AAQABAAAAAADxAD8AAQABAAAAAADyAD8AAQABAAAAAADzAD8AAQABAAAAAAD0AD8AAQABAAAAAAD1AD8AAQABAAAAAAD2AD8AAQABAAAAAAD3AD8AAQABAAAAAAD4AD8AAQABAAAAAAD5AD8AAQABAAAAAAD6AD8AAQABAAAAAAD7AD8AAQABAAAAAAD8AD8AAQABAAAAAAD9AD8AAQABAAAAAAD+AD8AAQABAAAAAAD/AD8AAQABAAAAAAAAAT8AAQABAAAAAAABAT8AAQABAAAAAAA=")
+tile_set = SubResource("TileSet_cbp6q")
+
+[node name="starting_position" type="Node2D" parent="."]
+position = Vector2(30, 404)
+
+[node name="block" parent="." instance=ExtResource("3_vhh4d")]
+position = Vector2(183, 419)
+
+[node name="block2" parent="." instance=ExtResource("3_vhh4d")]
+position = Vector2(214, 419)
+
+[node name="block3" parent="." instance=ExtResource("3_vhh4d")]
+position = Vector2(214, 388)
+
+[node name="block4" parent="." instance=ExtResource("3_vhh4d")]
+position = Vector2(245, 419)
+
+[node name="block5" parent="." instance=ExtResource("3_vhh4d")]
+position = Vector2(245, 388)
+
+[node name="block6" parent="." instance=ExtResource("3_vhh4d")]
+position = Vector2(276, 388)
+
+[node name="block7" parent="." instance=ExtResource("3_vhh4d")]
+position = Vector2(307, 388)
+
+[node name="block8" parent="." instance=ExtResource("3_vhh4d")]
+position = Vector2(276, 419)
+
+[node name="block9" parent="." instance=ExtResource("3_vhh4d")]
+position = Vector2(307, 419)
+
+[node name="block10" parent="." instance=ExtResource("3_vhh4d")]
+position = Vector2(338, 419)
+
+[node name="block11" parent="." instance=ExtResource("3_vhh4d")]
+position = Vector2(-24, 423)
+
+[node name="block12" parent="." instance=ExtResource("3_vhh4d")]
+position = Vector2(-24, 392)
+
+[node name="block13" parent="." instance=ExtResource("3_vhh4d")]
+position = Vector2(-24, 361)
+
+[node name="block14" parent="." instance=ExtResource("3_vhh4d")]
+position = Vector2(-24, 330)
+
+[node name="block15" parent="." instance=ExtResource("3_vhh4d")]
+position = Vector2(1103, 419)
+
+[node name="block16" parent="." instance=ExtResource("3_vhh4d")]
+position = Vector2(1134, 419)
+
+[node name="block17" parent="." instance=ExtResource("3_vhh4d")]
+position = Vector2(1165, 419)
+
+[node name="block18" parent="." instance=ExtResource("3_vhh4d")]
+position = Vector2(1196, 419)
+
+[node name="block19" parent="." instance=ExtResource("3_vhh4d")]
+position = Vector2(1196, 388)
+
+[node name="block20" parent="." instance=ExtResource("3_vhh4d")]
+position = Vector2(1165, 388)
+
+[node name="block21" parent="." instance=ExtResource("3_vhh4d")]
+position = Vector2(1134, 388)
+
+[node name="block22" parent="." instance=ExtResource("3_vhh4d")]
+position = Vector2(1103, 388)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+offset_left = 30.0
+offset_top = 279.0
+offset_right = 192.0
+offset_bottom = 354.0
+theme_override_fonts/normal_font = ExtResource("5_f02tp")
+text = "It's a devil enemy! Squash its head to kill it!"
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="."]
+offset_left = 516.0
+offset_top = 289.0
+offset_right = 678.0
+offset_bottom = 364.0
+theme_override_fonts/normal_font = ExtResource("5_f02tp")
+text = "Grab the halo enemies for a boost!"
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="."]
+offset_left = 947.0
+offset_top = 307.0
+offset_right = 1109.0
+offset_bottom = 382.0
+theme_override_fonts/normal_font = ExtResource("5_f02tp")
+text = "Use their boosts to reach the exit!"
+
+[node name="TextureRect" parent="." instance=ExtResource("6_04g2k")]
+offset_left = 352.0
+offset_top = 310.0
+offset_right = 365.0
+offset_bottom = 325.0
+the_text = "FIXME: Max bounces on devils should be one."
+
+[node name="TextureRect2" parent="." instance=ExtResource("6_04g2k")]
+offset_left = 659.0
+offset_top = 380.0
+offset_right = 672.0
+offset_bottom = 395.0
+the_text = "TODO: Implement boosts."
+
+[node name="TextureRect3" parent="." instance=ExtResource("6_04g2k")]
+offset_left = 721.0
+offset_top = 383.0
+offset_right = 734.0
+offset_bottom = 398.0
+the_text = "FIXME: If you let a halo enemy despawn in your hands, you don't exit the grab state."
+
+[node name="TextureRect4" parent="." instance=ExtResource("6_04g2k")]
+offset_left = 778.0
+offset_top = 386.0
+offset_right = 791.0
+offset_bottom = 401.0
+the_text = "FIXME: Even weirder with the last bug, if a new object then loads into the active object slot where your hands are indexing into, that object teleports into your hands and you can throw it."
+
+[node name="TextureRect5" parent="." instance=ExtResource("6_04g2k")]
+offset_left = 848.0
+offset_top = 382.0
+offset_right = 861.0
+offset_bottom = 397.0
+the_text = "FIXME: You can end up throwing devil enemies which shouldn't be allowed. Even weirder, they seem to get their movement messed up and freeze in midair. You can also bounce on them still..."
+
+[node name="Door" type="Sprite2D" parent="."]
+position = Vector2(1159, 329)
+texture = ExtResource("7_vxl8l")
+
+[node name="launcher" parent="." instance=ExtResource("2_rr31j")]
+position = Vector2(300, 359)
+enemy_type = 2
+launcher_type = 1
+
+[node name="launcher2" parent="." instance=ExtResource("2_rr31j")]
+position = Vector2(797, 314)
+enemy_type = 1
+launcher_type = 2
+
+[node name="Entity" type="CharacterBody2D" parent="." node_paths=PackedStringArray("area_collider")]
+script = ExtResource("8_xwjtr")
+type = 5
+area_collider = NodePath("Area2D")
+metadata/_custom_type_script = "uid://bicyvhsgocq7m"
+
+[node name="Area2D" type="Area2D" parent="Entity"]
+position = Vector2(1163, 350)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entity/Area2D"]
+shape = SubResource("RectangleShape2D_0i0an")

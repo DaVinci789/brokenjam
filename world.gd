@@ -1,16 +1,51 @@
 extends Node2D
 
+	#if %Button.just_pressed:
+		#var new_enemy: Entity = enemy_halo_scene.instantiate()
+		#new_enemy.global_position = Vector2(199, 132)
+		#if register_object(new_enemy) > -1:
+			#%gameworld.add_child(new_enemy)
+		#else:
+			#new_enemy.queue_free()
+	#
+	#if %Button1.just_pressed:
+		#var new_enemy: Entity = enemy_devil_scene.instantiate()
+		#new_enemy.global_position = Vector2(300, 132)
+		#if register_object(new_enemy) > -1:
+			#%gameworld.add_child(new_enemy)
+		#else:
+			#new_enemy.queue_free()
+
 @onready var node_player: Entity = %player
 @onready var arms := %player.get_node("arms")
 @onready var starting_arms_position: Vector2 = arms.global_position
 @onready var fantasy_ui := %fantasy_ui
+@onready var level := %gameworld
+@onready var mainmenu := %mainmenu
 @onready var enemy_halo_scene := preload("res://enemy_halo.tscn")
 @onready var enemy_halo_tex   := preload("res://enemy_halo_tex.tres")
 @onready var enemy_devil_scene := preload("res://enemy_devil.tscn")
 @onready var enemy_devil_tex   := preload("res://enemy_devil_tex.tres")
+@onready var enemy_launcher_air := preload("res://enemy_launcher_air.tres")
+@onready var enemy_launcher_ground := preload("res://enemy_launcher_ground.tres")
 
 var fantasy_ui_offset := Vector2.ZERO
 var caught_enemy := false
+
+class InputPair:
+	var input: String
+	var lifetime: int
+	var processed: bool
+	
+	func _init(_input, _lifetime):
+		self.input = _input
+		self.lifetime = _lifetime
+		self.processed = false
+
+var input_buffer: Array[InputPair] = []
+var input_buffer_len := 7 # unit is frames
+
+var in_title_screen := true
 
 var active_objects: Array[Entity] = [
 	null,
@@ -33,12 +68,16 @@ class CollisionPair:
 func get_gravity(entity: Entity) -> float:
 	return entity.jump_gravity if entity.velocity.y < 0.0 else entity.fall_gravity
 
-func throw_arm(player: Entity) -> void:
+func throw_arm(player: Entity) -> bool:
+	var result := false
 	if player.arm_action == Entity.ArmActionType.None:
 		if player.hold_state == Entity.HoldState.Empty:
 			player.arm_action = Entity.ArmActionType.Grab
+			result = true
 		elif player.hold_state == Entity.HoldState.Holding:
 			player.arm_action = Entity.ArmActionType.Throw
+			result = true
+	return result
 
 func get_entities() -> Array[Entity]:
 	var array: Array[Entity]
@@ -82,6 +121,12 @@ func adjust_tex(entity: Entity, tex: TextureRect):
 		tex.visible = true
 	elif entity.enemy_type == Entity.EnemyType.Devil:
 		tex.texture = enemy_devil_tex
+		tex.visible = true
+	elif entity.launcher_type == entity.LauncherType.Ground :
+		tex.texture = enemy_launcher_ground
+		tex.visible = true
+	elif entity.launcher_type == Entity.LauncherType.Sky:
+		tex.texture = enemy_launcher_air
 		tex.visible = true
 	else:
 		assert(false)
@@ -128,9 +173,18 @@ func disable_collision(entity: Entity) -> void:
 	pass
 
 func _ready() -> void:
+	#for entity in get_entities():
+		#if entity.type == Entity.EntityType.Enemy:
+			#entity.velocity.x = -100
+	node_player.global_position = %Layer0.starting_position
 	for entity in get_entities():
-		if entity.type == Entity.EntityType.Enemy:
-			entity.velocity.x = -100
+		if entity.launcher_type != Entity.LauncherType.None:
+			if entity.launcher_type == Entity.LauncherType.Ground:
+				entity.get_node("ground").visible = true
+				entity.get_node("sky").visible = false
+			elif entity.launcher_type == Entity.LauncherType.Sky:
+				entity.get_node("ground").visible = false
+				entity.get_node("sky").visible = true
 
 func get_enemies(entities: Array[Entity]) -> Array[Entity]:
 	var result: Array[Entity] = []
@@ -146,6 +200,24 @@ func flip_facing(entity: Entity) -> void:
 		entity.facing = Entity.Facing.Left
 
 func _process(delta: float) -> void:
+	for dev_note in get_tree().get_nodes_in_group("DevNote"):
+		if dev_note.hovered:
+			%DevNotePanel.visible = true
+			%DevNotePanel.get_node("Label").text = dev_note.the_text
+			break
+		else:
+			%DevNotePanel.visible = false
+			
+	if in_title_screen:
+		if %mainmenu.ready_to_move_on:
+			%mainmenu.queue_free()
+			%DevNoteTitleScreen.queue_free()
+			node_player.get_node("Camera2D").enabled = true
+			for dev_note in get_tree().get_nodes_in_group("DevNote"):
+				dev_note.scale = Vector2(2, 2)
+			in_title_screen = false
+		return
+	
 	var entities := get_entities()
 	var enemies  := get_enemies(entities)
 	var collision_pairs := get_area_collisions(entities)
@@ -167,17 +239,45 @@ func _process(delta: float) -> void:
 	# Update coyote check AFTER frames_in_air is correct
 	node_player.can_jump = node_player.is_on_floor() or node_player.frames_in_air <= node_player.coyote_frames
 	
-	if Input.is_action_pressed("ui_cancel"):
-		get_tree().quit()
-	
 	var input_horizontal := Input.get_axis("input_left", "input_right")
 	node_player.velocity.x = input_horizontal * node_player.move_speed
 	
-	if Input.is_action_just_pressed("input_a") and node_player.can_jump and not node_player.state & Entity.ActState.Jump:
-		node_player.velocity.y = node_player.jump_velocity
-		node_player.state |= Entity.ActState.Jump
+	if node_player.velocity.x > 0:
+		node_player.facing = Entity.Facing.Right
+		node_player.get_node("AnimatedSprite2D").play("new_animation")
+	elif node_player.velocity.x < 0:
+		node_player.facing = Entity.Facing.Left
+		node_player.get_node("AnimatedSprite2D").play("new_animation")
+	elif node_player.velocity.x == 0:
+		node_player.get_node("AnimatedSprite2D").stop()
+		node_player.get_node("AnimatedSprite2D").frame = 0
+	
+	if Input.is_action_just_pressed("input_a"):
+		input_buffer.append(InputPair.new("input_a", input_buffer_len))
 	if Input.is_action_just_pressed("input_b"):
-		throw_arm(node_player)
+		input_buffer.append(InputPair.new("input_b", input_buffer_len))
+	if Input.is_action_pressed("input_down"):
+		node_player.fallthrough_timer = node_player.fallthrough_length_frames
+	
+	var input_a_processed := false
+	var input_b_processed := false
+	for input_idx in range(len(input_buffer)):
+		var input_pair := input_buffer[input_idx]
+		input_pair.lifetime -= 1
+		if input_pair.input == "input_a" and not input_a_processed:
+			if node_player.can_jump and not node_player.state & Entity.ActState.Jump:
+				node_player.velocity.y = node_player.jump_velocity
+				node_player.state |= Entity.ActState.Jump
+				input_pair.processed = true
+				input_a_processed = true
+		elif input_a_processed:
+			input_pair.processed = true
+		if input_pair.input == "input_b" and not input_b_processed:
+			if throw_arm(node_player):
+				input_pair.processed = true
+				input_b_processed = true
+		elif input_b_processed:
+			input_pair.processed = true
 	
 	if node_player.arm_action != Entity.ArmActionType.None:
 		node_player.arms_active_timer += delta
@@ -185,6 +285,11 @@ func _process(delta: float) -> void:
 	else:
 		starting_arms_position = arms.global_position
 		arms.velocity = Vector2.ZERO
+	
+	if node_player.fallthrough_timer > 0:
+		node_player.set_collision_mask_value(3, false)
+	else:
+		node_player.set_collision_mask_value(3, true)
 
 	for pair in collision_pairs:
 		if pair.a.type == Entity.EntityType.Arms and pair.b.type == Entity.EntityType.Enemy:
@@ -197,12 +302,20 @@ func _process(delta: float) -> void:
 		if pair.a.type == Entity.EntityType.Feet and pair.b.type == Entity.EntityType.Enemy:
 			if pair.b.enemy_type == Entity.EnemyType.Devil:
 				node_player.velocity.y = pair.b.head_bounce_velocity
+				if not pair.b.frozen:
+					pair.b.queue_free()
+		if (pair.a.type == Entity.EntityType.Player and pair.b.type == Entity.EntityType.Finish) or (pair.a.type == Entity.EntityType.Arms and pair.b.type == Entity.EntityType.Finish):
+			%fadeout.visible = true
+			%fadeout.get_node("AnimationPlayer").play("fadeout")
 	
 	for enemy: Entity in enemies:
-		if enemy.slot_index == node_player.hold_index:
-			enemy.held = true 
-			disable_collision(enemy)
-			enemy.velocity = Vector2.ZERO
+		if enemy.slot_index > -1 and node_player.hold_index > -1:
+			if enemy.slot_index == node_player.hold_index:
+				enemy.held = true 
+				if enemy.enemy_type == Entity.EnemyType.Devil:
+					enemy.frozen = true
+				disable_collision(enemy)
+				enemy.velocity = Vector2.ZERO
 	
 	for enemy: Entity in enemies:
 		if enemy.held:
@@ -212,15 +325,39 @@ func _process(delta: float) -> void:
 				blink(enemy, true)
 		else:
 			enemy.enemy_timer += delta
+			enemy.spawn_timer += delta
 			enemy.enemy_timer = clampf(enemy.enemy_timer, 0.0, enemy.enemy_oscillation_length)
-			if enemy.enemy_type == Entity.EnemyType.Halo:
+			enemy.spawn_timer = clampf(enemy.spawn_timer, 0.0, enemy.spawn_timer_length)
+			if enemy.enemy_type == Entity.EnemyType.Halo or enemy.launcher_type == Entity.LauncherType.Sky:
 				enemy.velocity.y = enemy.vertical_velocity_curve.sample(enemy.enemy_timer / enemy.enemy_oscillation_length)
 			elif enemy.enemy_type == Entity.EnemyType.Devil:
 				if enemy.frames_in_air == 0:
-					if is_equal_approx(abs(enemy.last_collision.get_normal().x), 1.0):
+					if enemy.at_edge or is_equal_approx(abs(enemy.last_collision.get_normal().x), 1.0):
 						flip_facing(enemy)
 				else:
 					enemy.velocity.x = 0
+			if enemy.launcher_type != Entity.LauncherType.None and enemy.on_screen:
+				if is_equal_approx(enemy.spawn_timer / enemy.spawn_timer_length, 1.0):
+					if enemy.enemy_type == Entity.EnemyType.Halo:
+						var new_enemy: Entity = enemy_halo_scene.instantiate()
+						new_enemy.global_position = enemy.global_position
+						if register_object(new_enemy) > -1:
+							level.add_child(new_enemy)
+						else:
+							new_enemy.queue_free()
+					elif enemy.enemy_type == Entity.EnemyType.Devil:
+						var allowed := true
+						for entity in active_objects:
+							if entity:
+								if entity.enemy_type == Entity.EnemyType.Devil:
+									allowed = false
+						if allowed:
+							var new_enemy: Entity = enemy_devil_scene.instantiate()
+							new_enemy.global_position = enemy.global_position
+							if register_object(new_enemy) > -1:
+								level.add_child(new_enemy)
+							else:
+								new_enemy.queue_free()
 	
 	if node_player.arm_action == Entity.ArmActionType.Throw:
 		if node_player.arms_curve.sample(node_player.arms_active_timer / node_player.arms_act_length) >= node_player.arms_curve.max_value:
@@ -239,39 +376,41 @@ func _process(delta: float) -> void:
 	if fantasy_ui.corner_active:
 		fantasy_ui.size = get_global_mouse_position() - fantasy_ui.global_position
 	
-	if %Button.just_pressed:
-		var new_enemy: Entity = enemy_halo_scene.instantiate()
-		new_enemy.global_position = Vector2(199, 132)
-		if register_object(new_enemy) > -1:
-			%gameworld.add_child(new_enemy)
-		else:
-			new_enemy.queue_free()
-	
-	if %Button1.just_pressed:
-		var new_enemy: Entity = enemy_devil_scene.instantiate()
-		new_enemy.global_position = Vector2(300, 132)
-		if register_object(new_enemy) > -1:
-			%gameworld.add_child(new_enemy)
-		else:
-			new_enemy.queue_free()
-	
 	# reset/flushing zone
+	input_buffer = input_buffer.filter(func(input: InputPair): return not input.processed and input.lifetime > 0)
+	if node_player.fallthrough_timer > 0:
+		node_player.fallthrough_timer -= 1
 	if caught_enemy:
 		node_player.hold_state = Entity.HoldState.Holding
 		caught_enemy = false
 	if node_player.arms_active_timer / node_player.arms_act_length >= 1.0:
 		node_player.arms_active_timer = 0
 		node_player.arm_action = Entity.ArmActionType.None
+	if node_player.facing == Entity.Facing.Left:
+		node_player.get_node("AnimatedSprite2D").flip_h = true
+	elif node_player.facing == Entity.Facing.Right:
+		node_player.get_node("AnimatedSprite2D").flip_h = false
 	for enemy: Entity in enemies:
-		if enemy.enemy_timer / enemy.enemy_oscillation_length >= 1.0:
+		if is_equal_approx(enemy.enemy_timer / enemy.enemy_oscillation_length, 1.0):
 			enemy.enemy_timer = 0
+		if is_equal_approx(enemy.spawn_timer / enemy.spawn_timer_length, 1.0):
+			enemy.spawn_timer = 0
 		if not enemy.on_screen or enemy.despawn_timer <= 0.0:
 			active_objects[enemy.slot_index] = null
-			enemy.queue_free() # not this.
-		if enemy.facing == Entity.Facing.Left:
+			if enemy.enemy_toggles & Entity.EnemyToggles.FreeOnScreenExit:
+				enemy.queue_free()
+		if enemy.facing == Entity.Facing.Left and enemy.launcher_type == Entity.LauncherType.None:
 			enemy.velocity.x = -enemy.movement_speed
-		else:
+			enemy.get_node("Sprite2D").flip_h = true
+			if enemy.has_node("RayCast2D"):
+				enemy.get_node("RayCast2D").target_position.x = -22
+				enemy.get_node("RayCast2D").force_raycast_update()
+		elif enemy.facing == Entity.Facing.Right and enemy.launcher_type == Entity.LauncherType.None:
 			enemy.velocity.x = enemy.movement_speed
+			enemy.get_node("Sprite2D").flip_h = false
+			if enemy.has_node("RayCast2D"):
+				enemy.get_node("RayCast2D").target_position.x = 22
+				enemy.get_node("RayCast2D").force_raycast_update()
 		if enemy.enemy_toggles & Entity.EnemyToggles.UseGravity:
 			enemy.velocity.y = enemy.weight
 	
@@ -294,7 +433,7 @@ func _physics_process(delta: float) -> void:
 		arms.move_and_slide()
 	
 	for entity: Entity in enemies:
-		if not entity.held:
+		if not entity.held and not entity.frozen:
 			entity.move_and_slide()
 			entity.last_collision = entity.get_last_slide_collision()
 	pass

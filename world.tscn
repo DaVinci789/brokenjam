@@ -1,20 +1,91 @@
-[gd_scene load_steps=25 format=4 uid="uid://c8i3422yldarm"]
+[gd_scene load_steps=34 format=3 uid="uid://c8i3422yldarm"]
 
 [ext_resource type="Script" uid="uid://cycpam4c4eru5" path="res://world.gd" id="1_tlwt5"]
-[ext_resource type="Texture2D" uid="uid://bbj0md4xap7db" path="res://sky.png" id="2_70uel"]
 [ext_resource type="Script" uid="uid://bicyvhsgocq7m" path="res://entity.gd" id="2_k3n1d"]
-[ext_resource type="Texture2D" uid="uid://chqvlsx2jfebj" path="res://icon.svg" id="2_tlwt5"]
 [ext_resource type="Curve" uid="uid://biub7w8c1x0m5" path="res://arms_curve.tres" id="3_2o6r5"]
-[ext_resource type="Texture2D" uid="uid://iq7qvil14r5j" path="res://floor_sprite.png" id="3_hiqwa"]
+[ext_resource type="PackedScene" uid="uid://cq5o3rfvc5bu7" path="res://level0.tscn" id="3_hiqwa"]
+[ext_resource type="Script" uid="uid://c0rytcnogkyj1" path="res://level.gd" id="4_hiqwa"]
 [ext_resource type="Texture2D" uid="uid://clruk8tdf246" path="res://head.png" id="4_ioo17"]
 [ext_resource type="Script" uid="uid://cj18dxn01r02p" path="res://fantasy_ui.gd" id="5_036b0"]
 [ext_resource type="Texture2D" uid="uid://ds5xxw5q5b4e8" path="res://hand.png" id="5_wse8f"]
 [ext_resource type="Texture2D" uid="uid://cxe0vnxfeqq20" path="res://torso.png" id="6_ic0uy"]
+[ext_resource type="Texture2D" uid="uid://daqrilk07st2u" path="res://acearmless.png" id="6_udxuc"]
 [ext_resource type="Texture2D" uid="uid://k2havrlx7exv" path="res://foot.png" id="7_k3n1d"]
 [ext_resource type="Texture2D" uid="uid://cwm7v0l67u1wl" path="res://enemy.png" id="8_ioo17"]
-[ext_resource type="Texture2D" uid="uid://c3hf5osesum3p" path="res://block.png" id="9_wse8f"]
-[ext_resource type="Texture2D" uid="uid://buhd5ycaguv73" path="res://enemy_devil_tex.tres" id="11_2o6r5"]
 [ext_resource type="Script" uid="uid://dewogb7ebgm6c" path="res://immediate_button.gd" id="12_k3n1d"]
+[ext_resource type="Texture2D" uid="uid://haur017j6fnc" path="res://enemy_launcher_ground.tres" id="13_hiqwa"]
+[ext_resource type="PackedScene" uid="uid://d3430qynob2bi" path="res://mainmenu.tscn" id="13_udxuc"]
+[ext_resource type="PackedScene" uid="uid://bghxa1m6uvkcl" path="res://devnote.tscn" id="18_cbp6q"]
+[ext_resource type="AudioStream" uid="uid://cfd2cg5jtpvu6" path="res://bgm0_cheesecakeshoals.ogg" id="18_ikiii"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ikiii"]
+atlas = ExtResource("6_udxuc")
+region = Rect2(0, 0, 33, 47)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cbp6q"]
+atlas = ExtResource("6_udxuc")
+region = Rect2(33, 0, 33, 47)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_26xuy"]
+atlas = ExtResource("6_udxuc")
+region = Rect2(66, 0, 33, 47)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bc84e"]
+atlas = ExtResource("6_udxuc")
+region = Rect2(99, 0, 33, 47)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wukud"]
+atlas = ExtResource("6_udxuc")
+region = Rect2(132, 0, 33, 47)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_il2jm"]
+atlas = ExtResource("6_udxuc")
+region = Rect2(165, 0, 33, 47)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wjb0r"]
+atlas = ExtResource("6_udxuc")
+region = Rect2(198, 0, 33, 47)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mc2jv"]
+atlas = ExtResource("6_udxuc")
+region = Rect2(231, 0, 33, 47)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_bo7i5"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ikiii")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cbp6q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_26xuy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bc84e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wukud")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_il2jm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wjb0r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mc2jv")
+}],
+"loop": true,
+"name": &"new_animation",
+"speed": 17.0
+}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ioo17"]
 size = Vector2(32, 10.3333)
@@ -25,34 +96,69 @@ points = PackedVector2Array(0, -20, 10, 20, -10, 20)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2o6r5"]
 size = Vector2(25, 8.66666)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ic0uy"]
-size = Vector2(30.6667, 31.6667)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ikiii"]
+bg_color = Color(0.2052, 0.214447, 0.76, 1)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_k3n1d"]
-size = Vector2(395.333, 28.8333)
+[sub_resource type="Animation" id="Animation_udxuc"]
+resource_name = "fadeout"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Label:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 0), Color(0, 0, 0, 1)]
+}
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2u3nc"]
-texture = ExtResource("3_hiqwa")
-texture_region_size = Vector2i(7, 7)
-0:0/0 = 0
+[sub_resource type="Animation" id="Animation_ikiii"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Label:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 0)]
+}
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_udxuc"]
-texture = ExtResource("3_hiqwa")
-margins = Vector2i(17, 0)
-texture_region_size = Vector2i(7, 7)
-0:0/0 = 0
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ikiii"]
-texture = ExtResource("3_hiqwa")
-margins = Vector2i(2, 0)
-texture_region_size = Vector2i(7, 7)
-5:0/0 = 0
-
-[sub_resource type="TileSet" id="TileSet_cbp6q"]
-tile_size = Vector2i(7, 7)
-sources/0 = SubResource("TileSetAtlasSource_2u3nc")
-sources/2 = SubResource("TileSetAtlasSource_udxuc")
-sources/3 = SubResource("TileSetAtlasSource_ikiii")
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_cbp6q"]
+_data = {
+&"RESET": SubResource("Animation_ikiii"),
+&"fadeout": SubResource("Animation_udxuc")
+}
 
 [node name="world" type="Node2D"]
 script = ExtResource("1_tlwt5")
@@ -79,16 +185,18 @@ render_target_update_mode = 4
 [node name="gameworld" type="Node2D" parent="CanvasLayer/SubViewportContainer/SubViewport"]
 unique_name_in_owner = true
 
-[node name="Sky" type="Sprite2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld"]
-position = Vector2(192.667, 106.667)
-texture = ExtResource("2_70uel")
+[node name="Layer0" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld" instance=ExtResource("3_hiqwa")]
+unique_name_in_owner = true
+script = ExtResource("4_hiqwa")
 
 [node name="player" type="CharacterBody2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld"]
 unique_name_in_owner = true
 position = Vector2(104, 125)
+collision_mask = 7
 script = ExtResource("2_k3n1d")
 type = 1
 move_speed = 200.0
+fallthrough_length_frames = 7
 facing = 2
 arms_act_length = 0.5
 arms_curve = ExtResource("3_2o6r5")
@@ -97,7 +205,13 @@ jump_height = 3000.0
 jump_time_to_peak = 13.0
 jump_time_to_descent = 14.0
 
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/player"]
+position = Vector2(3, -13.3333)
+sprite_frames = SubResource("SpriteFrames_bo7i5")
+animation = &"new_animation"
+
 [node name="Icon" type="Sprite2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/player"]
+visible = false
 position = Vector2(4.33333, -26.6667)
 texture = ExtResource("4_ioo17")
 
@@ -133,11 +247,12 @@ position = Vector2(7, -39)
 script = ExtResource("2_k3n1d")
 metadata/_custom_type_script = "uid://bicyvhsgocq7m"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/player"]
+[node name="collision" type="CollisionShape2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/player"]
 position = Vector2(4, -11.3333)
 shape = SubResource("ConvexPolygonShape2D_2o6r5")
 
 [node name="Torso" type="Sprite2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/player"]
+visible = false
 position = Vector2(2.66666, -9.33334)
 texture = ExtResource("6_ic0uy")
 
@@ -148,10 +263,12 @@ type = 3
 metadata/_custom_type_script = "uid://bicyvhsgocq7m"
 
 [node name="Foot" type="Sprite2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/player/feet"]
+visible = false
 position = Vector2(-8, 0.777781)
 texture = ExtResource("7_k3n1d")
 
 [node name="Foot2" type="Sprite2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/player/feet"]
+visible = false
 position = Vector2(7.66667, 1.11111)
 texture = ExtResource("7_k3n1d")
 
@@ -160,107 +277,14 @@ texture = ExtResource("7_k3n1d")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/player/feet/Area2D"]
 shape = SubResource("RectangleShape2D_2o6r5")
 
-[node name="Entity3" type="CharacterBody2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld"]
-position = Vector2(105.667, 171.333)
-script = ExtResource("2_k3n1d")
-metadata/_custom_type_script = "uid://bicyvhsgocq7m"
+[node name="Camera2D" type="Camera2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/player"]
+position = Vector2(1, -64)
+enabled = false
+editor_draw_limits = true
+editor_draw_drag_margin = true
 
-[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/Entity3"]
-texture = ExtResource("9_wse8f")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/Entity3"]
-position = Vector2(-0.333344, -0.166668)
-shape = SubResource("RectangleShape2D_ic0uy")
-
-[node name="Entity4" type="CharacterBody2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld"]
-position = Vector2(75, 171)
-script = ExtResource("2_k3n1d")
-metadata/_custom_type_script = "uid://bicyvhsgocq7m"
-
-[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/Entity4"]
-texture = ExtResource("9_wse8f")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/Entity4"]
-position = Vector2(-0.333344, -0.166668)
-shape = SubResource("RectangleShape2D_ic0uy")
-
-[node name="Entity5" type="CharacterBody2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld"]
-position = Vector2(75, 139.667)
-script = ExtResource("2_k3n1d")
-metadata/_custom_type_script = "uid://bicyvhsgocq7m"
-
-[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/Entity5"]
-texture = ExtResource("9_wse8f")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/Entity5"]
-position = Vector2(-0.333344, -0.166668)
-shape = SubResource("RectangleShape2D_ic0uy")
-
-[node name="Entity6" type="CharacterBody2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld"]
-position = Vector2(44, 171.333)
-script = ExtResource("2_k3n1d")
-metadata/_custom_type_script = "uid://bicyvhsgocq7m"
-
-[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/Entity6"]
-texture = ExtResource("9_wse8f")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/Entity6"]
-position = Vector2(-0.333344, -0.166668)
-shape = SubResource("RectangleShape2D_ic0uy")
-
-[node name="Entity7" type="CharacterBody2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld"]
-position = Vector2(44, 140.333)
-script = ExtResource("2_k3n1d")
-metadata/_custom_type_script = "uid://bicyvhsgocq7m"
-
-[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/Entity7"]
-texture = ExtResource("9_wse8f")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/Entity7"]
-position = Vector2(-0.333344, -0.166668)
-shape = SubResource("RectangleShape2D_ic0uy")
-
-[node name="Entity8" type="CharacterBody2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld"]
-position = Vector2(44.3333, 108.667)
-script = ExtResource("2_k3n1d")
-metadata/_custom_type_script = "uid://bicyvhsgocq7m"
-
-[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/Entity8"]
-texture = ExtResource("9_wse8f")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/Entity8"]
-position = Vector2(-0.333344, -0.166668)
-shape = SubResource("RectangleShape2D_ic0uy")
-
-[node name="Entity10" type="CharacterBody2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld"]
-position = Vector2(135.667, 75)
-script = ExtResource("2_k3n1d")
-metadata/_custom_type_script = "uid://bicyvhsgocq7m"
-
-[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/Entity10"]
-texture = ExtResource("9_wse8f")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/Entity10"]
-position = Vector2(-0.333344, -0.166668)
-shape = SubResource("RectangleShape2D_ic0uy")
-
-[node name="Entity9" type="CharacterBody2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld"]
-position = Vector2(196.667, 203.667)
-script = ExtResource("2_k3n1d")
-metadata/_custom_type_script = "uid://bicyvhsgocq7m"
-
-[node name="Icon" type="Sprite2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/Entity9"]
-position = Vector2(-4.6667, 42.5)
-scale = Vector2(2.97917, 0.882812)
-texture = ExtResource("2_tlwt5")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/SubViewportContainer/SubViewport/gameworld/Entity9"]
-shape = SubResource("RectangleShape2D_k3n1d")
-
-[node name="Layer0" type="TileMapLayer" parent="CanvasLayer"]
-use_parent_material = true
-tile_map_data = PackedByteArray("AAABAAIAAgAAAAAAAAACAAIAAgAAAAAAAAADAAIAAgAAAAAAAAAEAAIAAgAAAAAAAAAFAAIAAgAAAAAAAAAAAAIAAAAAAAAAAAAGAAIAAwAFAAAAAAA=")
-tile_set = SubResource("TileSet_cbp6q")
+[node name="mainmenu" parent="CanvasLayer/SubViewportContainer/SubViewport" instance=ExtResource("13_udxuc")]
+unique_name_in_owner = true
 
 [node name="fantasy_ui" type="Panel" parent="CanvasLayer"]
 unique_name_in_owner = true
@@ -268,8 +292,8 @@ clip_contents = true
 custom_minimum_size = Vector2(150, 150)
 offset_left = 59.0
 offset_top = 33.0
-offset_right = 359.0
-offset_bottom = 226.0
+offset_right = 376.0
+offset_bottom = 278.0
 script = ExtResource("5_036b0")
 
 [node name="ColorRect3" type="ColorRect" parent="CanvasLayer/fantasy_ui"]
@@ -278,7 +302,8 @@ layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 65.0
+offset_top = 64.0
+offset_bottom = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.403922, 0.403922, 0.403922, 0.47451)
@@ -290,9 +315,9 @@ anchor_top = 0.055
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 8.0
-offset_top = -0.0400023
+offset_top = -0.475
 offset_right = -7.0
-offset_bottom = -17.0
+offset_bottom = -55.0
 grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
@@ -313,8 +338,8 @@ offset_right = -3.0
 offset_bottom = -3.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("11_2o6r5")
-stretch_mode = 6
+texture = ExtResource("13_hiqwa")
+stretch_mode = 5
 flip_h = true
 
 [node name="ColorRect2" type="ColorRect" parent="CanvasLayer/fantasy_ui/ColorRect3/HFlowContainer"]
@@ -334,7 +359,7 @@ offset_bottom = -3.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("8_ioo17")
-stretch_mode = 6
+stretch_mode = 5
 flip_h = true
 
 [node name="ColorRect3" type="ColorRect" parent="CanvasLayer/fantasy_ui/ColorRect3/HFlowContainer"]
@@ -354,7 +379,7 @@ offset_bottom = -3.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("8_ioo17")
-stretch_mode = 6
+stretch_mode = 5
 flip_h = true
 
 [node name="ColorRect4" type="ColorRect" parent="CanvasLayer/fantasy_ui/ColorRect3/HFlowContainer"]
@@ -374,7 +399,7 @@ offset_bottom = -3.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("8_ioo17")
-stretch_mode = 6
+stretch_mode = 5
 flip_h = true
 
 [node name="ColorRect5" type="ColorRect" parent="CanvasLayer/fantasy_ui/ColorRect3/HFlowContainer"]
@@ -394,7 +419,7 @@ offset_bottom = -3.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("8_ioo17")
-stretch_mode = 6
+stretch_mode = 5
 flip_h = true
 
 [node name="ColorRect6" type="ColorRect" parent="CanvasLayer/fantasy_ui/ColorRect3/HFlowContainer"]
@@ -414,7 +439,7 @@ offset_bottom = -3.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("8_ioo17")
-stretch_mode = 6
+stretch_mode = 5
 flip_h = true
 
 [node name="ColorRect7" type="ColorRect" parent="CanvasLayer/fantasy_ui/ColorRect3/HFlowContainer"]
@@ -434,7 +459,7 @@ offset_bottom = -3.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("8_ioo17")
-stretch_mode = 6
+stretch_mode = 5
 flip_h = true
 
 [node name="ColorRect8" type="ColorRect" parent="CanvasLayer/fantasy_ui/ColorRect3/HFlowContainer"]
@@ -454,7 +479,7 @@ offset_bottom = -3.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("8_ioo17")
-stretch_mode = 6
+stretch_mode = 5
 flip_h = true
 
 [node name="ColorRect9" type="ColorRect" parent="CanvasLayer/fantasy_ui/ColorRect3/HFlowContainer"]
@@ -474,7 +499,7 @@ offset_bottom = -3.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("8_ioo17")
-stretch_mode = 6
+stretch_mode = 5
 flip_h = true
 
 [node name="ColorRect10" type="ColorRect" parent="CanvasLayer/fantasy_ui/ColorRect3/HFlowContainer"]
@@ -494,7 +519,7 @@ offset_bottom = -3.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("8_ioo17")
-stretch_mode = 6
+stretch_mode = 5
 flip_h = true
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer/fantasy_ui"]
@@ -504,6 +529,7 @@ anchors_preset = 10
 anchor_right = 1.0
 grow_horizontal = 2
 mouse_filter = 1
+color = Color(0.35, 0.360834, 1, 1)
 
 [node name="ColorRect2" type="ColorRect" parent="CanvasLayer/fantasy_ui"]
 layout_mode = 1
@@ -519,7 +545,6 @@ grow_vertical = 0
 mouse_filter = 1
 
 [node name="Label" type="Label" parent="CanvasLayer/fantasy_ui"]
-modulate = Color(0, 0, 0, 1)
 layout_mode = 1
 offset_left = 6.0
 offset_top = 1.0
@@ -533,10 +558,27 @@ offset_left = 15.0
 offset_top = 36.0
 offset_right = 146.0
 offset_bottom = 59.0
-text = "Objects"
+text = "Active Objects"
+
+[node name="Button" type="Button" parent="CanvasLayer/fantasy_ui"]
+visible = false
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 13.0
+offset_top = -41.0
+offset_right = 122.0
+offset_bottom = -10.0
+grow_vertical = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_ikiii")
+text = "Restart Level"
+script = ExtResource("12_k3n1d")
+metadata/_custom_type_script = "uid://dewogb7ebgm6c"
 
 [node name="Button" type="Button" parent="CanvasLayer"]
 unique_name_in_owner = true
+visible = false
 offset_left = 695.0
 offset_top = 147.0
 offset_right = 792.0
@@ -546,6 +588,7 @@ script = ExtResource("12_k3n1d")
 
 [node name="Button1" type="Button" parent="CanvasLayer"]
 unique_name_in_owner = true
+visible = false
 offset_left = 993.0
 offset_top = 181.0
 offset_right = 1122.0
@@ -553,6 +596,68 @@ offset_bottom = 212.0
 text = "spawn enemy 2"
 script = ExtResource("12_k3n1d")
 metadata/_custom_type_script = "uid://dewogb7ebgm6c"
+
+[node name="DevNoteTitleScreen" parent="CanvasLayer" instance=ExtResource("18_cbp6q")]
+unique_name_in_owner = true
+offset_left = 442.0
+offset_top = 334.0
+offset_right = 455.0
+offset_bottom = 349.0
+the_text = "Remember to disable the debug window and devlogs in the public release. -dav"
+
+[node name="DevNotePanel" type="Panel" parent="CanvasLayer"]
+unique_name_in_owner = true
+visible = false
+offset_left = 920.0
+offset_top = 2.0
+offset_right = 1148.0
+offset_bottom = 230.0
+
+[node name="Label" type="RichTextLabel" parent="CanvasLayer/DevNotePanel"]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 3.0
+offset_right = 225.0
+offset_bottom = 223.0
+text = "would"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("18_ikiii")
+autoplay = true
+parameters/looping = true
+
+[node name="fadeout" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="fadeout"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0)
+
+[node name="Label" type="Label" parent="fadeout"]
+self_modulate = Color(0, 0, 0, 0)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -178.5
+offset_top = -24.5
+offset_right = 178.5
+offset_bottom = 24.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "That's all, folks!
+We ran out of time. Hope that was interesting."
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="fadeout"]
+libraries = {
+&"": SubResource("AnimationLibrary_cbp6q")
+}
 
 [connection signal="gui_input" from="CanvasLayer/fantasy_ui" to="CanvasLayer/fantasy_ui" method="_on_gui_input"]
 [connection signal="mouse_entered" from="CanvasLayer/fantasy_ui" to="CanvasLayer/fantasy_ui" method="_on_mouse_entered"]

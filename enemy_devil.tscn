@@ -44,6 +44,7 @@ size = Vector2(12, 5)
 
 [node name="Entity" type="CharacterBody2D" node_paths=PackedStringArray("area_collider", "animation_player")]
 collision_layer = 2
+collision_mask = 7
 script = ExtResource("1_nugmr")
 type = 4
 move_speed = 3.0
@@ -57,7 +58,7 @@ head_bounce_velocity = -300.0
 despawn_timer = 4.0
 despawn_blink = 1.0
 enemy_oscillation_length = 1.0
-enemy_toggles = 1
+enemy_toggles = 7
 metadata/_custom_type_script = "uid://bicyvhsgocq7m"
 metadata/_access_modifiers = {
 &"animation_player": 2,
@@ -69,7 +70,7 @@ metadata/_access_modifiers = {
 &"despawn_oscillation": 2,
 &"despawn_timer": 2,
 &"enemy_oscillation_length": 2,
-&"enemy_toggles": 2,
+&"enemy_toggles": 0,
 &"enemy_type": 2,
 &"facing": 2,
 &"floor_snap_length": 2,
@@ -104,3 +105,7 @@ shape = SubResource("RectangleShape2D_d0t25")
 
 [node name="collision" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_d0t25")
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+target_position = Vector2(-22, 19)
+collision_mask = 6
